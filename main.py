@@ -88,6 +88,28 @@ async def pin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except:
         pass
 
+async def unpin(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    chat = update.effective_chat
+
+    member = await chat.get_member(user.id)
+
+    if member.status not in ["administrator", "creator"]:
+        return
+
+    await chat.unpin_all_messages()
+
+    msg = await update.message.reply_text(
+        "📌 Message unpinned."
+    )
+
+    await asyncio.sleep(5)
+
+    try:
+        await msg.delete()
+    except:
+        pass
+
 
 if __name__ == "__main__":
     main()
