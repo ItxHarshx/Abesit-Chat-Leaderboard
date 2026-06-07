@@ -144,7 +144,7 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<b>- ABESIT Assistant.</b>"
     ),
     parse_mode="HTML"
-        )
+        ))
 
     await msg.pin(disable_notification=True)
 
