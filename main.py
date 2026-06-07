@@ -12,10 +12,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mention = update.effective_user.mention_html(
         update.effective_user.first_name
     )
+    bot_username = context.bot.username
 
     text = (
     f"✦ ʜᴇʏ <b>{mention}</b> !\n\n"
-    f"◎ ᴛʜɪꜱ ɪꜱ <b>{context.bot.first_name}</b>"
+    f'⊚ ᴛʜɪꜱ ɪꜱ <a href="https://t.me/{bot_username}"><b>{context.bot.first_name}</b></a>'
 )
 
     await update.message.reply_html(text)
