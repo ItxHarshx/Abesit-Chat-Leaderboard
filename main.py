@@ -32,6 +32,7 @@ def main():
     )
     app.add_handler(CommandHandler("pin", pin))
     app.add_handler(CommandHandler("unpin", unpin))
+    app.add_handler(CommandHandler("announce", announce))
 
     print("Bot is running...")
 
