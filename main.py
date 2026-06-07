@@ -15,8 +15,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     bot_username = context.bot.username
 
     text = (
-    f"✦ ʜᴇʏ <b>{mention}</b> !\n\n"
-    f'⊚ ᴛʜɪꜱ ɪꜱ <a href="https://t.me/{bot_username}"><b>{context.bot.first_name}</b></a>'
+    f"✦ Hey <b>{mention}</b> !\n\n"
+    f'◎ This is <a href="https://t.me/{bot_username}"><b>{context.bot.first_name}</b></a>, Your Abesit assistant.'
 )
 
     await update.message.reply_html(text)
