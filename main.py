@@ -14,8 +14,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     text = (
-    f"✦ ʜєʟʟᴏ <b>{mention}</b> ηɪᴄє ᴛᴏ ϻєєᴛ ʏσᴜ 🥀\n\n"
-    f"⊚ ᴛʜɪꜱ ɪꜱ <b>{context.bot.first_name}</b>"
+    f"✦ ʜᴇʏ <b>{mention}</b> !\n\n"
+    f"◎ ᴛʜɪꜱ ɪꜱ <b>{context.bot.first_name}</b>"
 )
 
     await update.message.reply_html(text)
