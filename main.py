@@ -37,6 +37,7 @@ def main():
     app.add_handler(CommandHandler("lockgroup", lockgroup))
     app.add_handler(CommandHandler("unlockgroup", unlockgroup))
     app.add_handler(CommandHandler("ping", ping))
+    app.add_handler(CommandHandler("lockstatus", lockstatus))
 
     app.add_handler(
     MessageHandler(
@@ -272,6 +273,20 @@ async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"⏱ Response Time: {response_time:.0f} ms\n\n"
         f"🤖 Status: Online"
     )
+
+
+async def lockstatus(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if GROUP_LOCKED:
+        await update.message.reply_text(
+            "🔒 Group Status: Locked\n\n"
+            "Only group admins can send messages."
+        )
+    else:
+        await update.message.reply_text(
+            "🔓 Group Status: Unlocked\n\n"
+            "All members can send messages."
+        )
+
 
 
 if __name__ == "__main__":
