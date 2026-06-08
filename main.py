@@ -276,6 +276,12 @@ async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def lockstatus(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_chat.type == "private":
+        await update.message.reply_text(
+            "This command can only be used in a group."
+        )
+        return
+
     if GROUP_LOCKED:
         await update.message.reply_text(
             "🔒 Group Status: Locked\n\n"
