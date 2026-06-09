@@ -432,9 +432,7 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(
                     f"❌ Failed to kick user:\n{e}"
                 )
-
-
-
-
-if __name__ == "__main__":
-    main()
+                
+                
+                if __name__ == "__main__":
+                    main()
