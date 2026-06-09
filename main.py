@@ -409,28 +409,29 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{target_mention} kicked by {admin_mention}.\n"
             f"📝 Reason: {reason}"
         )
-
+        
         log_text = (
-            f"🚨 KICK ACTION\n\n"
-            f"- User: {target_mention} ({target.id})\n"
-            f"- Kicked By: {admin_mention}\n"
-            f"- At: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-            f"- Reason: {reason}"
+            f"🚨 <u><b>KICK ACTION</b></u>\n\n"
+            f"<b>• User: {target_mention}</b> (<code>{target.id}</code>)\n"
+            f"<b>• Kicked By: {admin_mention}</b>\n"
+            f"<b>• At:</b> <i>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}<i>\n"
+            f"<b>• Reason:</b> {reason}"
         )
-
+        
         for sudo_id in SUDO_USERS:
             try:
                 await context.bot.send_message(
                     chat_id=sudo_id,
-                    text=log_text
+                    text=log_text,
+                    parse_mode="HTML"
                 )
             except Exception:
                 pass
-
-    except Exception as e:
-        await update.message.reply_text(
-            f"❌ Failed to kick user:\n{e}"
-        )
+            
+            except Exception as e:
+                await update.message.reply_text(
+                    f"❌ Failed to kick user:\n{e}"
+                )
 
 
 
