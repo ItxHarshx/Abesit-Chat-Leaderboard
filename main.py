@@ -434,5 +434,5 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
                 
                 
-                if __name__ == "__main__":
-                    main()
+if __name__ == "__main__":
+    main()
