@@ -401,9 +401,6 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         target_mention = target.mention_html()
         admin_mention = admin.mention_html()
-        admin_name = admin.first_name
-        target_name = target.first_name
-
         
         await update.message.reply_html(
             f"{target_mention} kicked by {admin_mention}.\n"
@@ -414,24 +411,24 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"🚨 <u><b>KICK ACTION</b></u>\n\n"
             f"<b>• User: {target_mention}</b> (<code>{target.id}</code>)\n"
             f"<b>• Kicked By: {admin_mention}</b>\n"
-            f"<b>• At:</b> <i>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}<i>\n"
+            f"<b>• At:</b> <i>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</i>\n"
             f"<b>• Reason:</b> {reason}"
         )
         
         for sudo_id in SUDO_USERS:
-            try:
-                await context.bot.send_message(
-                    chat_id=sudo_id,
-                    text=log_text,
-                    parse_mode="HTML"
-                )
-            except Exception:
-                pass
-            
-            except Exception as e:
-                await update.message.reply_text(
-                    f"❌ Failed to kick user:\n{e}"
-                )
+    try:
+        await context.bot.send_message(
+            chat_id=sudo_id,
+            text=log_text,
+            parse_mode="HTML"
+        )
+    except Exception:
+        pass
+
+except Exception as e:
+    await update.message.reply_text(
+        f"❌ Failed to kick user:\n{e}"
+    )
                 
                 
 if __name__ == "__main__":
