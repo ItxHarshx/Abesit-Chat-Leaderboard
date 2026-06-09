@@ -312,40 +312,41 @@ async def sudoers(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_html(text)
 
-
-
-# ---------- helper: check admin ----------
+# ---------- admin check ----------
 async def is_admin(chat, user_id):
     member = await chat.get_member(user_id)
     return member.status in ["administrator", "creator"] and member.can_restrict_members
 
 
-# ---------- helper: resolve target ----------
-async def get_target_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# ---------- resolve target safely ----------
+async def resolve_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
-    chat = update.effective_chat
 
-    # 1. Reply case
+    # 1. Reply (BEST METHOD)
     if message.reply_to_message:
         return message.reply_to_message.from_user
 
-    # 2. Argument case
+    # 2. ID or username
     if context.args:
         arg = context.args[0]
 
-        # Case A: numeric ID
+        # ID case
         if arg.isdigit():
             try:
-                return await context.bot.get_chat(int(arg))
+                member = await update.effective_chat.get_member(int(arg))
+                return member.user
             except:
                 return None
 
-        # Case B: username (@user or user)
+        # username case (@user)
         if arg.startswith("@"):
             arg = arg[1:]
 
         try:
-            return await context.bot.get_chat(arg)
+            # IMPORTANT: this only works in some cases
+            chat = await context.bot.get_chat(arg)
+            if chat.type == "private":
+                return chat
         except:
             return None
 
@@ -361,12 +362,11 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Only works in groups.")
         return
 
-    # admin check
     if not await is_admin(chat, user.id):
-        await update.message.reply_text("❌ You don't have permission to kick users.")
+        await update.message.reply_text("❌ You don't have permission.")
         return
 
-    target = await get_target_user(update, context)
+    target = await resolve_target(update, context)
 
     if not target:
         await update.message.reply_text(
@@ -377,11 +377,17 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
+    # prevent kicking admins
+    target_member = await chat.get_member(target.id)
+    if target_member.status in ["administrator", "creator"]:
+        await update.message.reply_text("❌ I can't kick admins.")
+        return
+
     reason = " ".join(context.args[1:]) if len(context.args) > 1 else "No reason provided"
     time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     try:
-        # kick (ban + unban)
+        # REAL KICK (temporary ban)
         await chat.ban_member(target.id)
         await chat.unban_member(target.id)
 
@@ -401,7 +407,6 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"📌 Reason: {reason}"
         )
 
-        # send to sudoers
         for sudo_id in SUDO_USERS:
             try:
                 await context.bot.send_message(sudo_id, log_text)
@@ -410,7 +415,6 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await update.message.reply_text(f"❌ Error: {e}")
-
 
 
 
