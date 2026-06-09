@@ -57,17 +57,10 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         mention = user.mention_html(user.first_name)
 
-        msg = await update.message.reply_html(
-            f"Hello {mention}, welcome to ABESIT Batch (2026-2027). wishing you a great college journey! 🎉"
+        await update.message.reply_html(
+            f"Hello {mention}, welcome to ABESIT Batch (2026-2027). Wishing you a great college journey! 🎉"
         )
-
-        await asyncio.sleep(300)  # 5 minutes
-
-        try:
-            await msg.delete()
-        except:
-            pass
-
+        
 async def pin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     chat = update.effective_chat
