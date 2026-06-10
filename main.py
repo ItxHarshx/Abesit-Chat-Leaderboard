@@ -726,32 +726,31 @@ async def anti_link_filter(update: Update, context: ContextTypes.DEFAULT_TYPE):
         r"instagram\.com/direct/invite",
         r"ig\.me/",
     ]
-    
-for pattern in patterns:
-    if re.search(pattern, text):
-        try:
-            await update.message.delete()
-
-            warning = await context.bot.send_message(
-                chat_id=chat.id,
-                text=(
-                    f"{user.mention_html()} 🚫 <b>AntiLink Detection is Enabled</b>\n"
-                    "You can't send invite links in this group."
-                ),
-                parse_mode="HTML"
-            )
-
-            await asyncio.sleep(5)
-
+    for pattern in patterns:
+        if re.search(pattern, text):
             try:
-                await warning.delete()
-            except Exception:
-                pass
+                await update.message.delete()
 
-        except Exception as e:
-            print(f"ANTILINK ERROR: {e}")
+                warning = await context.bot.send_message(
+                    chat_id=chat.id,
+                    text=(
+                        f"{user.mention_html()} 🚫 <b>AntiLink Detection is Enabled</b>\n"
+                        "You can't send invite links in this group."
+                    ),
+                    parse_mode="HTML"
+                )
 
-        break
+                await asyncio.sleep(5)
+
+                try:
+                    await warning.delete()
+                except Exception:
+                    pass
+
+            except Exception as e:
+                print(f"ANTILINK ERROR: {e}")
+
+            break
                     
         
 if __name__ == "__main__":
